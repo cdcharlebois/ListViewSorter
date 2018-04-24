@@ -25,7 +25,6 @@ define([
 
         templateString: widgetTemplate,
 
-
         widgetBase: null,
 
         // Internal variables.
@@ -37,8 +36,8 @@ define([
         sortAttribute: "",
         listEntity: "",
         targetListName: "",
-		headerLabel: "",
-		headerClass: "",
+        headerLabel: "",
+        headerClass: "",
 
         constructor: function() {
             this._handles = [];
@@ -71,18 +70,29 @@ define([
         _updateRendering: function(callback) {
             logger.debug(this.id + "._updateRendering");
             dojoClass.add(this.listSortDiv, "sort-header");
-			dojoClass.add(this.headerLabelSpan, this.headerClass);
+            dojoClass.add(this.headerLabelSpan, this.headerClass);
             this._setSort(this.sortSpan, this._currentSortDirection);
-			this.headerLabelSpan.innerHTML = this.headerLabel;
+            this.headerLabelSpan.innerHTML = this.headerLabel;
 
-            mendix.lang.nullExec(callback);
+            if (callback && "function" === typeof callback) {
+                callback();
+            }
         },
-        _toggleDirection: function(){
-          this._currentSortDirection
-            ? this._currentSortDirection == "asc"
-              ? this._currentSortDirection = "desc"
-              : this._currentSortDirection = "asc"
-            : this._currentSortDirection = "asc";
+        _toggleDirection: function() {
+            if (this._currentSortDirection) {
+                if (this._currentSortDirection == "asc") {
+                    this._currentSortDirection = "desc"
+                } else {
+                    this._currentSortDirection = "asc"
+                }
+            } else {
+                this._currentSortDirection = "asc";
+            }
+            // this._currentSortDirection ?
+            //     this._currentSortDirection == "asc" ?
+            //     this._currentSortDirection = "desc" :
+            //     this._currentSortDirection = "asc" :
+            //     this._currentSortDirection = "asc";
         },
         _doClick: function(e) {
             // e.preventDefault();
@@ -91,15 +101,19 @@ define([
             if (listNode) {
                 var listWidget = dijit.registry.byNode(listNode);
                 if (listWidget) {
-					var datasourceRef = listWidget._datasource || listWidget._dataSource;
+                    var datasourceRef = listWidget._datasource || listWidget._dataSource;
 
-					listWidget.sort = [[this.sortAttribute, this._currentSortDirection]];
-                    datasourceRef._sorting = [[this.sortAttribute, this._currentSortDirection]]; //Fix for Mx5.19, not needed in 6.10 (or so it seems)
+                    listWidget.sort = [
+                        [this.sortAttribute, this._currentSortDirection]
+                    ];
+                    datasourceRef._sorting = [
+                        [this.sortAttribute, this._currentSortDirection]
+                    ]; //Fix for Mx5.19, not needed in 6.10 (or so it seems)
                     if (listWidget.update) {
-						listWidget.update();
-					} else {
-						listWidget.reload();
-					}
+                        listWidget.update();
+                    } else {
+                        listWidget.reload();
+                    }
                     this._updateRendering();
                     this._resetOtherWidgetsRendering();
                 } else {
@@ -109,30 +123,28 @@ define([
                 console.log("Could not find the list view node.");
             }
         },
-        _resetOtherWidgetsRendering: function(){
-          var others = document.querySelectorAll('.listSorter .sortIcon:not(.sort-none)');
-          var self = this;
-          others.forEach(function(el){
-            if (el === self.sortSpan) return;
-            self._setSort(el, null);
-          });
+        _resetOtherWidgetsRendering: function() {
+            var others = document.querySelectorAll('.listSorter .sortIcon:not(.sort-none)');
+            var self = this;
+            others.forEach(function(el) {
+                if (el === self.sortSpan) return;
+                self._setSort(el, null);
+            });
         },
-        _setSort: function(el, dir){
-          if (dir === "asc"){
-            dojoClass.add(el, "sort-asc");
-            dojoClass.remove(el, "sort-desc");
-            dojoClass.remove(el, "sort-none");
-          }
-          else if (dir === "desc"){
-            dojoClass.remove(el, "sort-asc");
-            dojoClass.add(el, "sort-desc");
-            dojoClass.remove(el, "sort-none");
-          }
-          else {
-            dojoClass.remove(el, "sort-asc");
-            dojoClass.remove(el, "sort-desc");
-            dojoClass.add(el, "sort-none");
-          }
+        _setSort: function(el, dir) {
+            if (dir === "asc") {
+                dojoClass.add(el, "sort-asc");
+                dojoClass.remove(el, "sort-desc");
+                dojoClass.remove(el, "sort-none");
+            } else if (dir === "desc") {
+                dojoClass.remove(el, "sort-asc");
+                dojoClass.add(el, "sort-desc");
+                dojoClass.remove(el, "sort-none");
+            } else {
+                dojoClass.remove(el, "sort-asc");
+                dojoClass.remove(el, "sort-desc");
+                dojoClass.add(el, "sort-none");
+            }
         }
     });
 });
