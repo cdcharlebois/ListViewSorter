@@ -28,7 +28,7 @@ iVBORw0KGgoAAAANSUhEUgAAAesAAAGNCAIAAAC+PM6xAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAA
             <category>Behavior</category>
             <description>The type of objects in the list.</description>
         </property>
-		<property key="sortAttribute" type="attribute" entityProperty="listEntity" allowNonPersistableEntities="true" required="true">
+		<property key="sortAttribute" type="attribute" entityProperty="listEntity" allowNonPersistableEntities="true" required="true" isPath="optional" pathType="reference">
 			<caption>Sorting Attribute</caption>
 			<category>Behavior</category>
 			<description>The attribute to sort on the grid.</description>
