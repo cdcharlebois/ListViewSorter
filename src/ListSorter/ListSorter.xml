@@ -8,10 +8,13 @@ iVBORw0KGgoAAAANSUhEUgAAAesAAAGNCAIAAAC+PM6xAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAA
 </icon>
 
     <properties>
-		<property key="headerLabel" type="string" required="true" defaultValue="My Header">
+		<property key="headerLabel" type="translatableString" required="true" defaultValue="">
             <caption>Header Label</caption>
             <category>Appearance</category>
             <description>The label for this header.</description>
+            <translations>
+                <translation lang="en_US">My Header</translation>
+            </translations>
         </property>
 		<property key="headerClass" type="string" required="false" defaultValue="">
             <caption>Header CSS Class</caption>
