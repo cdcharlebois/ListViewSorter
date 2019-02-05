@@ -18,7 +18,7 @@ define([
     "dojo/query",
 
     "dojo/text!ListSorter/widget/template/ListSorter.html"
-], function(declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, on, dojoQuery, widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, on, dojoQuery, widgetTemplate) {
     "use strict";
 
     return declare("ListSorter.widget.ListSorter", [_WidgetBase, _TemplatedMixin], {
@@ -39,17 +39,17 @@ define([
         headerLabel: "",
         headerClass: "",
 
-        constructor: function() {
+        constructor: function () {
             this._handles = [];
         },
 
-        postCreate: function() {
+        postCreate: function () {
             logger.debug(this.id + ".postCreate");
 
             on(this.listSortDiv, "click", dojoLang.hitch(this, this._doClick));
         },
 
-        update: function(obj, callback) {
+        update: function (obj, callback) {
             logger.debug(this.id + ".update");
 
             this._contextObj = obj;
@@ -59,15 +59,15 @@ define([
             this._updateRendering(callback);
         },
 
-        resize: function(box) {
+        resize: function (box) {
             logger.debug(this.id + ".resize");
         },
 
-        uninitialize: function() {
+        uninitialize: function () {
             logger.debug(this.id + ".uninitialize");
         },
 
-        _updateRendering: function(callback) {
+        _updateRendering: function (callback) {
             logger.debug(this.id + "._updateRendering");
             dojoClass.add(this.listSortDiv, "sort-header");
             dojoClass.add(this.headerLabelSpan, this.headerClass);
@@ -78,7 +78,7 @@ define([
                 callback();
             }
         },
-        _toggleDirection: function() {
+        _toggleDirection: function () {
             if (this._currentSortDirection) {
                 if (this._currentSortDirection == "asc") {
                     this._currentSortDirection = "desc"
@@ -94,7 +94,7 @@ define([
             //     this._currentSortDirection = "asc" :
             //     this._currentSortDirection = "asc";
         },
-        _doClick: function(e) {
+        _doClick: function (e) {
             // e.preventDefault();
             this._toggleDirection();
             var listNode = dojoQuery(".mx-name-" + this.targetListName)[0];
@@ -123,15 +123,20 @@ define([
                 console.log("Could not find the list view node.");
             }
         },
-        _resetOtherWidgetsRendering: function() {
+        _resetOtherWidgetsRendering: function () {
             var others = document.querySelectorAll('.listSorter .sortIcon:not(.sort-none)');
             var self = this;
-            others.forEach(function(el) {
-                if (el === self.sortSpan) return;
-                self._setSort(el, null);
-            });
+            for (var i = 0; i < others.length; i++) {
+                if (others[i] !== self.sortSpan) {
+                    self._setSort(others[i], null);
+                }
+            }
+            // others.forEach(function(el) {
+            //     if (el === self.sortSpan) return;
+            //     self._setSort(el, null);
+            // });
         },
-        _setSort: function(el, dir) {
+        _setSort: function (el, dir) {
             if (dir === "asc") {
                 dojoClass.add(el, "sort-asc");
                 dojoClass.remove(el, "sort-desc");
