@@ -39,8 +39,11 @@ define([
         headerLabel: "",
         headerClass: "",
 
+        _pids: null,
+
         constructor: function () {
             this._handles = [];
+            this._pids = [];
         },
 
         postCreate: function () {
@@ -96,6 +99,7 @@ define([
         },
         _doClick: function (e) {
             // e.preventDefault();
+            if(this.showProgress) { this._pids.push(mx.ui.showProgress(null, true)) };
             this._toggleDirection();
             var listNode = dojoQuery(".mx-name-" + this.targetListName)[0];
             if (listNode) {
@@ -110,7 +114,7 @@ define([
                         [this.sortAttribute, this._currentSortDirection]
                     ]; //Fix for Mx5.19, not needed in 6.10 (or so it seems)
                     if (listWidget.update) {
-                        listWidget.update();
+                        listWidget.update(null, this._hideProgress.bind(this));
                     } else {
                         listWidget.reload();
                     }
@@ -121,6 +125,12 @@ define([
                 }
             } else {
                 console.log("Could not find the list view node.");
+            }
+        },
+        _hideProgress: function () {
+            if (this.showProgress) {
+                this._pids.forEach(mx.ui.hideProgress);
+                this._pids = [];
             }
         },
         _resetOtherWidgetsRendering: function () {
