@@ -21,6 +21,11 @@ iVBORw0KGgoAAAANSUhEUgAAAesAAAGNCAIAAAC+PM6xAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAA
             <category>Appearance</category>
             <description>Zero or more CSS classes to apply to the header label. Uses spaces to separate.</description>
         </property>
+        <property key="showProgress" type="boolean" required="true" defaultValue="false">
+            <caption>Show progressbar</caption>
+            <category>Appearance</category>
+            <description>Determines if a progressbar is shown while the data is loading</description>
+        </property>
         <property key="targetListName" type="string" required="true" defaultValue="">
             <caption>List Widget Name</caption>
             <category>Behavior</category>
